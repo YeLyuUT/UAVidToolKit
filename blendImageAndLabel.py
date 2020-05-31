@@ -21,10 +21,14 @@ def blendImageAndLabelForDir(imgDirHome,
     for pd in tqdm(lbl_seq_paths):
         lbl_dir = osp.join(labelDirHome, pd, labelSubDirname)
         lbl_paths = os.listdir(lbl_dir)
+        bld_dir = osp.join(blendDirHome, pd, blendSubDirname)
+        if not osp.isdir(bld_dir):
+            os.makedirs(bld_dir)
+            assert osp.isdir(bld_dir), 'Cannot create directory:%s'%(bld_dir)
         for lbl_p in lbl_paths:
             lbl_path = osp.abspath(osp.join(lbl_dir, lbl_p))
             img_path = osp.join(imgDirHome, pd, imageSubDirname, lbl_p)
-            bld_path = osp.join(blendDirHome, pd, blendSubDirname, lbl_p)
+            bld_path = osp.join(bld_dir, lbl_p)
             lbl = np.array(Image.open(lbl_path))
             img = np.array(Image.open(img_path))
             if lbl.ndim==2:
