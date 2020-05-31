@@ -22,7 +22,7 @@ if CSUPPORT:
         import sys
 
 clr_trans = UAVidColorTransformer()
-LABELS, CLASS_NAMES = zip([[i, name] for i, name in enumerate(clr_trans.colorTable().keys())])
+LABELS, CLASS_NAMES = zip(*[[i, name] for i, name in enumerate(clr_trans.colorTable().keys())])
 
 def getConfusionMatrixForImageList(classNum, predfileList, truefileList, evalLabels = LABELS):
   assert(len(predfileList)==len(truefileList))
@@ -114,16 +114,13 @@ def normalize_confusion_matrix(cm):
   return cm
 
 def visualizeMeanIOUforClasses(IOUs,labels,classNames,prefix = '',suffix = ''):
-  assert(isinstance(IOUs, list))
-  assert(isinstance(labels, list))
-  assert(isinstance(classNames, list))
   assert(len(IOUs)==len(labels))
   assert(len(IOUs)==len(classNames))
   y_pos = np.arange(len(IOUs)+1)
   plt.figure(figsize=(14, 5))
   barlist = plt.bar(y_pos, IOUs+[np.mean(IOUs)], align='center')
   ax = plt.axes()
-  color_tab = clr_trans.ColorTable()
+  color_tab = clr_trans.colorTable()
   for l in labels:
     idx = labels.index(l)
     clr = color_tab[classNames[l]]
@@ -138,12 +135,12 @@ def visualizeMeanIOUforClasses(IOUs,labels,classNames,prefix = '',suffix = ''):
   ax.text(barlist[-1].get_x()+barlist[-1].get_width()/2.,height+0.02,'%.3f'%(np.mean(IOUs)),ha='center', va='bottom')
 
   ax.yaxis.grid(color=(0.6,0.6,0.6),linestyle='--')
-  plt.xticks(y_pos, [n.replace('_',' ') for n in classNames+['MeanIOU']])
+  plt.xticks(y_pos, [n.replace('_',' ') for n in classNames+('MeanIOU',)])
   plt.tick_params(axis='x', which='major', labelsize=14)
   plt.ylabel('IOU Scores', fontsize=13)
   plt.ylim(0,1)
   plt.savefig(os.path.join('./',prefix+'IOU_scores'+suffix+'.png'))
-  plt.show()
+  #plt.show()
 
 def visualizeConfusionMatrix(cm, class_names,
                           normalize=False,
@@ -154,13 +151,13 @@ def visualizeConfusionMatrix(cm, class_names,
       print("Normalized confusion matrix")
   else:
       print('Confusion matrix, without normalization')
-
-  print(cm)
+  
+  plt.figure(figsize=(8, 6))
   plt.imshow(cm, interpolation='nearest', cmap=cmap)
   plt.title(title)
   plt.colorbar()
   tick_marks = np.arange(len(class_names))
-  class_name = [n.replace('_',' ') for n in class_names]
+  class_names = [n.replace('_',' ') for n in class_names]
   plt.xticks(tick_marks, class_names, rotation=45)
   plt.yticks(tick_marks, class_names)
   fmt = '.2f' if normalize else 'd'
@@ -174,7 +171,7 @@ def visualizeConfusionMatrix(cm, class_names,
   plt.xlabel('Predicted label')
   plt.tight_layout()
   plt.savefig(os.path.join('./',prefix+title+suffix+'.png'))
-  plt.show()
+  #plt.show()
 
 def parseArgs():
   parser = argparse.ArgumentParser(description='Evaluate Prediction')
@@ -193,14 +190,18 @@ def evaluateFromDirectories(args):
   IOUs = getIOUforClasses(cm, evallabels=LABELS)
   mIOU = getMeanIOU(cm)
   acc = getPixelAccuracy(cm)
-  print('IOUs:', IOUs)
+  iou_dict={}
+  for name, iou in zip(CLASS_NAMES, IOUs):
+    iou_dict[name] = iou
+  print('IOUs:', iou_dict)
   print('mIOU:', mIOU)
   print('acc:', acc)
   if use_visualize:
     visualizeMeanIOUforClasses(IOUs, labels=LABELS, classNames=CLASS_NAMES)
     visualizeConfusionMatrix(cm, CLASS_NAMES, title='Confusion Matrix', normalize=True)
+    plt.show()
 
 if __name__=='__main__':
   args = parseArgs()
   evaluateFromDirectories(args)
-
+  
