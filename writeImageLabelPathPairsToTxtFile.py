@@ -1,6 +1,7 @@
 import sys
 import os
 import os.path as osp
+import argparse
 
 def writeTrainValImageLabelPathPairsToTxtFile(data_home='../', useTrain=True, useVal=False):
   assert useTrain or useVal,'Error: None of the training set or the validation set is used.'
@@ -88,9 +89,9 @@ def writeTestPredImageLabelPathPairsToTxtFile(data_home='../', useTest=True, use
 
 def parseArgs():
   parser = argparse.ArgumentParser(description='Write image label path pairs of train and valid sets to txt file.')
-  parser.add_argument('-h', dest='data_home', type=str, default='../', help='dataset home directory.')
-  parser.add_argument('-t', dest='useTrain', type=str, help='use train set directory.', action='store_true')
-  parser.add_argument('-v', dest='useValid', type=str, help='use valid set directory.', action='store_true')
+  parser.add_argument('-d', dest='data_home', type=str, default='./', help='dataset home directory.')
+  parser.add_argument('-t', dest='useTrain', help='use train set directory.', action='store_true')
+  parser.add_argument('-v', dest='useValid', help='use valid set directory.', action='store_true')
   args = parser.parse_args()
   return args
 
