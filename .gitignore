@@ -1,3 +1,4 @@
 addToConfusionMatrix.c
 build/*
+__pycache__/*
 *.so
