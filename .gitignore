@@ -1,1 +1,3 @@
+addToConfusionMatrix.c
+build/*
 *.so
