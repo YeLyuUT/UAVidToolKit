@@ -1,0 +1,14 @@
+# prepare trainId files.
+python UAVidToolkit/prepareTrainIdFiles.py -s val/ -t tooltest/
+
+# convert to color.
+python UAVidToolkit/convertTrainIdFiles2Color.py -s tooltest/ -t tooltest/ -f 'color'
+
+# blend image and label files.
+python UAVidToolkit/blendImageAndLabel.py -i val/ -l tooltest/ -o tooltest/ -id Images -ld color -od blend
+
+# evaluate.
+python UAVidToolkit/evaluate.py -gt test -p pred_eg -v
+
+# write image label paths pair to txt.
+python UAVidToolkit/writeImageLabelPathPairsToTxtFile.py -d ./ -t -v
