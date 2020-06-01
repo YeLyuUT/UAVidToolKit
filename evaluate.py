@@ -18,8 +18,6 @@ if CSUPPORT:
     except:
         CSUPPORT = False
         from sklearn import metrics
-        import addToConfusionMatrix
-        import sys
 
 clr_trans = UAVidColorTransformer()
 LABELS, CLASS_NAMES = zip(*[[i, name] for i, name in enumerate(clr_trans.colorTable().keys())])
