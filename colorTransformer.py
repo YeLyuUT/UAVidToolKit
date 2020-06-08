@@ -2,21 +2,24 @@ import numpy as np
 class UAVidColorTransformer:
   def __init__(self):
     # color table.
-    clr_tab = {}
-    clr_tab['Clutter'] = [0,0,0]
-    clr_tab['Building'] = [128,0,0]
-    clr_tab['Road'] = [128,64,128]
-    clr_tab['Tree'] = [0,128,0]
-    clr_tab['Vegetation'] = [128,128,0]
-    clr_tab['Static_Car'] = [192, 0, 192]
-    clr_tab['Moving_Car'] = [64,0,128]
-    clr_tab['Human'] = [64, 64, 0]
-    self.clr_tab = clr_tab
+    self.clr_tab = self.createColorTable()
     # id table.
     id_tab = {}
-    for k, v in clr_tab.items():
+    for k, v in self.clr_tab.items():
         id_tab[k] = self.clr2id(v)
     self.id_tab = id_tab
+
+  def createColorTable(self):
+    clr_tab = {}
+    clr_tab['Cluster'] = [0, 0, 0]
+    clr_tab['Building'] = [128, 0, 0]
+    clr_tab['Road'] = [128, 64, 128]
+    clr_tab['Static_Car'] = [192, 0, 192]
+    clr_tab['Tree'] = [0, 128, 0]
+    clr_tab['Vegetation'] = [128, 128, 0]
+    clr_tab['Human'] = [64, 64, 0]
+    clr_tab['Moving_Car'] = [64, 0, 128]
+    return clr_tab
 
   def colorTable(self):
     return self.clr_tab
