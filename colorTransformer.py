@@ -11,7 +11,7 @@ class UAVidColorTransformer:
 
   def createColorTable(self):
     clr_tab = {}
-    clr_tab['Cluster'] = [0, 0, 0]
+    clr_tab['Clutter'] = [0, 0, 0]
     clr_tab['Building'] = [128, 0, 0]
     clr_tab['Road'] = [128, 64, 128]
     clr_tab['Static_Car'] = [192, 0, 192]
