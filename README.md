@@ -64,7 +64,7 @@ python UAVidToolKit/evaluate.py -gt <ground truth folder> -p <prediction folder>
 ```
 If add '-v', visualize mIoU and confusion matrix results with figures.
 
-e.g. python UAVidToolKit/evaluate.py -gt test -p pred_eg -v
+e.g. python UAVidToolKit/evaluate.py -gt valid -p pred_valid -v
 <br/>
 
 - ##### Write image label paths pair into txt.
