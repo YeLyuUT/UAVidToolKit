@@ -34,7 +34,8 @@ class UAVidColorTransformer:
     newLabel = np.zeros((height, width), dtype=dtype)
     id_label = label.astype(np.int64)
     id_label = id_label[:,:,0]+id_label[:,:,1]*255+id_label[:,:,2]*255*255
-    for tid,val in enumerate(self.id_tab.values()):
+    for tid,key in enumerate(self.clr_tab.keys()):
+      val = self.id_tab[key]
       mask = (id_label == val)
       newLabel[mask] = tid
     return newLabel
